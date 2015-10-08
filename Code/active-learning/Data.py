@@ -53,15 +53,15 @@ class Data():
 
 
 	def to_int(self, string):
-		if string=='R' or 'r':
+		if string in ('R','r'):
 			return 0
-		elif string=='G' or 'g':
+		elif string in ('G','g'):
 			return 1
-		elif string=='B' or 'b':
+		elif string in ('B','b'):
 			return 2
-		elif string=='C' or 'c':
+		elif string in ('C','c'):
 			return 1
-		elif string=='T' or 't':
+		elif string in ('T','t'):
 			return 2
 		else:
 			print 'WHAT!? ', string
