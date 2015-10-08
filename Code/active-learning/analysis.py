@@ -21,12 +21,17 @@ def main(player, n):
 	#random.seed(0)
 
 	starttime=time.clock()
-	if player=='adults':
-		data=Data.Data(parameters.inputfile_adults)
-		data.read(astext=False)
-	elif player=='kids':
-		data=Data.Data(parameters.inputfile_kids)
-		data.read(astext=False)
+	# if player=='adults':
+	# 	data=Data.Data(parameters.inputfile_adults)
+	# 	data.read(astext=False)
+	# elif player=='kids':
+	# 	data=Data.Data(parameters.inputfile_kids)
+	# 	data.read(astext=False)
+
+	#data=Data.Data(parameters.inputfile_kids)
+	data=Data.Data(parameters.inputfile_adults)
+	data.read(astext=False)
+
 	n_kids=parameters.n_kids
 	truncate=int(n)
 	#n_r_theo=parameters.n_r_theo

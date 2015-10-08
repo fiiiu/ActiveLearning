@@ -3,7 +3,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats
-
+import parameters
 
 #output_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
 output_directory=parameters.output_directory
@@ -62,7 +62,7 @@ def plot_sequential(model, n, scatter=False):
 	plt.figure(figsize=(12,8))
 	for i in range(1,n+1):
 		#filename=model+'-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
-		filename=model+'-'+str(i)+'_tru-20'+'_rreal.txt'
+		filename=model+'-'+str(i)+'_tru-2'+'_rreal.txt'
 		#fulldata=np.loadtxt(data_directory+today+filename)
 		fulldata=np.loadtxt(data_directory+filename)
 		print data_directory+filename
@@ -179,13 +179,13 @@ def plot_varyepsilons(model,n):
 
 def main():
 	#plot_entropy()
-	model='hypfull'
+	#model='hypfull'
 	#model='jointfull'
-	#model='theoryfull'
+	model='theoryfull'
 	
 
-	plot_sequential(model,4,True)
-	#plot_sequential(model,4,False)
+	#plot_sequential(model,4,True)
+	plot_sequential(model,4,False)
 	#plot_truncated_eig(1)
 
 	#model='theory'
