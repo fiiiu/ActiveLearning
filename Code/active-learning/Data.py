@@ -5,11 +5,8 @@ import parameters
 
 class Data():
 
-	def __init__(self, filename=None):
-		if filename is None:
-			self.filename=parameters.directory+'Data/CPF2_Transcribed112114-CSV.csv'
-		else:
-			self.filename=parameters.directory+filename
+	def __init__(self, filename):
+		self.filename=filename
 		self.data={}
 		self.data2={}
 		self.condition={}
@@ -53,16 +50,16 @@ class Data():
 
 
 	def to_int(self, string):
-		if string in ('R','r'):
+		if string in ('R','g','c'):
 			return 0
-		elif string in ('G','g'):
+		elif string in ('G','C','r'):
 			return 1
-		elif string in ('B','b'):
+		elif string in ('B','T','b','t'):
 			return 2
-		elif string in ('C','c'):
-			return 1
-		elif string in ('T','t'):
-			return 2
+		#elif string in ('C','c'):
+		#	return 1
+		#elif string in ('T','t'):
+		#	return 2
 		else:
 			print 'WHAT!? ', string
 

@@ -5,8 +5,9 @@ import numpy as np
 import scipy.stats
 
 
-output_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
-today='141119/'
+#output_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
+output_directory=parameters.output_directory
+today='151008/'
 #batch='ep-0.05/'
 batch='varyep/'
 data_directory=output_directory+today#+batch

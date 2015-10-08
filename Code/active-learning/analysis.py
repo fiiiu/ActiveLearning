@@ -21,8 +21,12 @@ def main(player, n):
 	#random.seed(0)
 
 	starttime=time.clock()
-	data=Data.Data()
-	data.read(astext=False)
+	if player=='adults':
+		data=Data.Data(parameters.inputfile_adults)
+		data.read(astext=False)
+	elif player=='kids':
+		data=Data.Data(parameters.inputfile_kids)
+		data.read(astext=False)
 	n_kids=parameters.n_kids
 	truncate=int(n)
 	#n_r_theo=parameters.n_r_theo
@@ -30,7 +34,7 @@ def main(player, n):
 
 	eg=np.zeros(len(data.get_kids()[:n_kids]))
 	
-	if player=='kids':
+	if player in ('kids','adults'):
 		n_r=1
 		for k,kid in enumerate(data.get_kids()[:n_kids]):
 			kidseq=data.data[kid][:truncate]
@@ -235,7 +239,7 @@ def main(player, n):
 
 
 
-	if player in ['random', 'theory', 'kids']:
+	if player in ['random', 'theory', 'kids', 'adults']:
 		filename=parameters.output_directory+'out-'+player+'-'+str(truncate)+'_tru-'+str(n_r)+'_real.txt'
 		np.savetxt(filename, eg)
 
@@ -266,7 +270,7 @@ def main(player, n):
 
 
 if __name__ == '__main__':
-	n=1
+	n=6
 	parallel=False
 	if len(sys.argv)==1:
 		player='kids'		
