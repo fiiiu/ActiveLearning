@@ -1,0 +1,11 @@
+
+THEORY
+1 action, t: 3.836, p: 0.001
+2 actions, t: -0.189, p: 0.852
+3 actions, t: -3.065, p: 0.005
+4 actions, t: -2.111, p: 0.044
+
+JOINT
+1 action, t: 3.799, p: 0.001
+2 actions, t: -1.970, p: 0.058
+3 actions, t: -4.691, p: 0.000

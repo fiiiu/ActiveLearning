@@ -1,0 +1,18 @@
+
+epsilon 0.001
+1 action, t: 3.836, p: 0.001
+2 actions, t: -1.132, p: 0.267
+3 actions, t: -3.287, p: 0.003
+4 actions, t: -1.825, p: 0.079
+
+epsilon 0.01
+1 action, t: 0.742, p: 0.464
+2 actions, t: -0.828, p: 0.414
+3 actions, t: -3.341, p: 0.002
+4 actions, t: -1.226, p: 0.231
+
+epsilon 0.05
+1 action, t: 0.708, p: 0.484
+2 actions, t: -0.621, p: 0.539
+3 actions, t: -3.426, p: 0.002
+4 actions, t: -0.861, p: 0.397
