@@ -1,5 +1,5 @@
 
-nohup python analysis.py 'full' 1 & > out1.txt
-nohup python analysis.py 'hypfull' 2 & > out2.txt
-nohup python analysis.py 'hypfull' 3 & > out3.txt
-nohup python analysis.py 'hypfull' 4 & > out4.txt
+nohup python analysis.py 'theoryfull' 1 & > out1.txt
+nohup python analysis.py 'theoryfull' 2 & > out2.txt
+nohup python analysis.py 'theoryfull' 3 & > out3.txt
+nohup python analysis.py 'theoryfull' 4 & > out4.txt

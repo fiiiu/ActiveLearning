@@ -7,10 +7,10 @@ import parameters
 
 #output_directory='/Users/alejo/Neuro/ActiveLearning/Output/'
 output_directory=parameters.output_directory
-today='151008/'
+today='151102/'
 #batch='ep-0.05/'
 batch='varyep/'
-data_directory=output_directory+today#+batch
+data_directory=output_directory#+today#+batch
 	
 
 
@@ -62,7 +62,7 @@ def plot_sequential(model, n, scatter=False):
 	plt.figure(figsize=(12,8))
 	for i in range(1,n+1):
 		#filename=model+'-'+str(i)+'_tru-1'+'_treal-20'+'_rreal.txt'
-		filename=model+'-'+str(i)+'_tru-2'+'_rreal.txt'
+		filename=model+'-'+str(i)+'_tru-20'+'_rreal.txt'
 		#fulldata=np.loadtxt(data_directory+today+filename)
 		fulldata=np.loadtxt(data_directory+filename)
 		print data_directory+filename
