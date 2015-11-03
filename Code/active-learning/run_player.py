@@ -8,13 +8,13 @@ import learners
 import parameters
 
 
-def run_player(n):
+def run_player(n, datafile):
     
     #timing
     starttime=time.clock()
 
     #kids' data
-    data=Data.Data()
+    data=Data.Data(datafile)
     data.read(astext=False)
     n_kids=parameters.n_kids
 
@@ -33,6 +33,7 @@ def run_player(n):
     #iterate kids
     k=0
     for kind,kid in enumerate(data.get_kids()[:n_kids]):
+        print 'Run for {0} actions, processing kid {1} out of {2}'.format(truncate, kind+1, n_kids)
         if data.get_kid_nactions(kid)<truncate:
             continue
         
@@ -94,10 +95,17 @@ def run_player(n):
 
 
 if __name__ == '__main__':
-    if len(sys.argv)>1:
-        n=int(sys.argv[1])
+    if len(sys.argv) != 3:
+        print 'Usage: python run_player.py action_number kids|adults'
     else:
-        n=1  
-    run_player(n)
+        if sys.argv[2] == 'kids':
+            datafile = parameters.inputfile_kids
+            run_player(sys.argv[1], datafile)
+        elif sys.argv[2] == 'adults':
+            datafile = parameters.inputfile_adults
+            run_player(sys.argv[1], datafile)
+        else:
+            print 'Usage: python run_player.py action_number kids|adults'
+        
 
 

@@ -90,7 +90,7 @@ def main(player, n):
 		
 		k=0
 		for ki,kid in enumerate(data.get_kids()[:n_kids]):
-			print 'Run for {0} actions, processing kid {1} out of {2}'.format(truncate, ki, n_kids)
+			print 'Run for {0} actions, processing kid {1} out of {2}'.format(truncate, ki+1, n_kids)
 			if data.get_kid_nactions(kid)<truncate:
 				continue
 			

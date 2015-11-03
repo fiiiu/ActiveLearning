@@ -11,9 +11,9 @@ elif platform.system()=='Linux':
 inputfile_kids=directory+'Data/CPF2_Transcribed112114-CSV.csv'
 inputfile_adults=directory+'Data/compiledv2_Headers.csv'
 
-output_directory=directory+'Output/Adults/151102/'
+output_directory=directory+'Output/Adults/151103/'
 
-n_kids=98#31#31#5#5#1#29 #31 total, use 40
+n_kids=98#31#31#5#5#1#29 #31 kids, 98 adults.
 #truncate=75
 #n_r_theo=1#5
 n_r_random=20#20#20#20#0#50

@@ -184,8 +184,8 @@ def main():
 	model='theoryfull'
 	
 
-	#plot_sequential(model,4,True)
-	plot_sequential(model,4,False)
+	plot_sequential(model,4,True)
+	#plot_sequential(model,4,False)
 	#plot_truncated_eig(1)
 
 	#model='theory'
