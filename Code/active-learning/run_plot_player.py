@@ -51,5 +51,5 @@ def plot_sequential(n, plot_type='hist', stats=True):
 
 
 if __name__=='__main__':
-    plot_sequential(4, 'scatter')
+    plot_sequential(4)#, 'scatter')
 
