@@ -65,7 +65,7 @@ def plot_sequential(model, n, scatter=False):
 		filename=model+'-'+str(i)+'_tru-20'+'_rreal.txt'
 		#fulldata=np.loadtxt(data_directory+today+filename)
 		fulldata=np.loadtxt(data_directory+filename)
-		print data_directory+filename
+		#print data_directory+filename
 
 		plt.subplot(np.ceil(float(n+1))/2,2,i, title='N actions: {0}'.format(i))
 		#plt.suptitle('{0}'.format(i))
@@ -88,7 +88,7 @@ def plot_sequential(model, n, scatter=False):
 			# else:
 			# 	print "{0} actions, t: {1:.3f}, p: {2:.3f}".format(i, stats[0], stats[1])
 		
-			print '{0:.3f} & {1:.3f}'.format(stats[0],stats[1])
+			print 't={0:.3f}, p={1:.3f}'.format(stats[0],stats[1])
 
 		else:			
 			#plt.ylim([0, 43])
@@ -179,13 +179,13 @@ def plot_varyepsilons(model,n):
 
 def main():
 	#plot_entropy()
-	#model='hypfull'
+	model='hypfull'
 	#model='jointfull'
-	model='theoryfull'
+	#model='theoryfull'
 	
 
 	plot_sequential(model,4,True)
-	#plot_sequential(model,4,False)
+	plot_sequential(model,4,False)
 	#plot_truncated_eig(1)
 
 	#model='theory'
