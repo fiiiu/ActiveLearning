@@ -23,22 +23,27 @@ dat_indep=[Datapoint.Datapoint((world.available_toys[0],world.machines[0]),True)
 tl=learners.TheoryLearner()
 jl=learners.JointLearner()
 rl=learners.RandomLearner()
+ml=learners.MixedLearner(0.2)
 
-print 'RandomLearner'
-print rl.choose_action(dat_col)
-print rl.choose_action(dat_sha)
-print rl.choose_action(dat_indep)
+# print 'RandomLearner'
+# print rl.choose_action(dat_col)
+# print rl.choose_action(dat_sha)
+# print rl.choose_action(dat_indep)
 
 print 'TheoryLearner'
 print tl.choose_action(dat_col)
 print tl.choose_action(dat_sha)
 print tl.choose_action(dat_indep)
 
-print 'JointLearner'
-print jl.choose_action(dat_col)
-print jl.choose_action(dat_sha)
-print jl.choose_action(dat_indep)
+# print 'JointLearner'
+# print jl.choose_action(dat_col)
+# print jl.choose_action(dat_sha)
+# print jl.choose_action(dat_indep)
 
+print 'MixedLearner'
+print ml.choose_action(dat_col)
+print ml.choose_action(dat_sha)
+print ml.choose_action(dat_indep)
 
 
 
