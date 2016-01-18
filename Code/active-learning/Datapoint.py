@@ -23,6 +23,8 @@ class Datapoint():
 		else:
 			return NotImplemented
 
+	def get_action(self):
+		return self.action
 
 	def display(self):
 		print "toy: {0}, machine: {1}, active: {2}".format(self.toy, self.machine, self.active)

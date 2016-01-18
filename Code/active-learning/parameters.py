@@ -13,7 +13,8 @@ inputfile_adults=directory+'Data/compiledv2_Headers.csv'
 
 output_directory=directory+'Output/Adults/151103/'
 
-n_kids=98#31#31#5#5#1#29 #31 kids, 98 adults.
+n_kids=31#31#5#5#1#29 #31 kids, 98 adults.
+n_adults=98
 #truncate=75
 #n_r_theo=1#5
 n_r_random=20#20#20#20#0#50
