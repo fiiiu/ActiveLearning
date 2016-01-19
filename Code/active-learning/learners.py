@@ -34,6 +34,27 @@ class ActiveLearner(object):
 		#self.experience.append(world.make_action(choice))
 		return choice
 
+	def choose_actions(self, prev_data=[]):
+		"""
+		Same as choose actions, but return all equivalents
+		"""
+		mingain=1000
+		astars=[]
+		for a in world.possible_actions():
+			if len(prev_data)>0:
+				if a==prev_data[-1].action:
+					continue
+			this_gain=self.expected_final_entropy(a, prev_data)
+			if this_gain < mingain:
+				astars=[a]
+				mingain=this_gain
+			elif this_gain == mingain:
+				astars.append(a)
+		return astars, mingain
+
+
+
+
 
 	def choose_action_phase2(self, stage, prev_data):
 		maxratio=0
@@ -134,6 +155,26 @@ class ActivePlayer():
 		choice=random.choice(astars)
 		#self.experience.append(world.make_action(choice))
 		return choice
+
+	def choose_actions(self, prev_data=[]):
+		"""
+		Same as choose actions, but return all equivalents
+		"""
+		maxprob=0
+		astars=[]
+		for a in world.possible_actions():
+			if len(prev_data)>0:
+				if a==prev_data[-1].action:
+					continue
+			this_prob=self.success_probability(a, prev_data)
+			if this_prob > maxprob:
+				astars=[a]
+				maxprob=this_prob
+			elif this_prob == maxprob:
+				astars.append(a)
+		#choice=random.choice(astars)
+		return astars, maxprob
+
 
 
 	def success_probability(self, action, prev_data=[]):
