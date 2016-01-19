@@ -16,7 +16,7 @@ class AnalyzedData():
 			print "Initialized with existing file. WILL NOT SAVE."
 		
 		if N is None:
-			N=parameters.n_kids
+			self.N=parameters.n_kids
 		else:
 			self.N=N
 		
