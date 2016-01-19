@@ -5,6 +5,7 @@ import world
 import entropy_gains
 import low_model as model
 import numpy as np
+import AnalyzedData
 
 class ActiveLearner(object):
 	"""docstring for ActiveLearner"""
@@ -247,3 +248,26 @@ class MixedLearner():
 
 
 
+class TabulatedMixedLearner():
+	
+	""" 
+	Player mixing IG and PM with probability theta (for IG). 
+	Now using THEORY for IG.
+	"""
+	
+	def __init__(self, theta, filename):
+		self.theta=theta
+		adata=AnalyzedData.AnalyzedData(filename)
+		adata.load()
+		self.alldata=adata.alldata
+	
+	def choose_actions(self, subject, actioni, prev_data=[]):
+		IG_a=self.alldata[subject][actioni]['TMA']
+		#print IG_a
+		PM_a=self.alldata[subject][actioni]['PMA']
+		#print PM_a
+
+		choices=[IG_a, PM_a]
+		strategy=np.random.choice(2, p=[self.theta, 1-self.theta])
+		choice=choices[strategy]
+		return choice
