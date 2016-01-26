@@ -8,15 +8,20 @@ import entropy_gains
 
 class AnalyzedData():
 
-	def __init__(self, filename, N=None, A=None):
+	def __init__(self, outfilename, group='kids', N=None, A=None):
 
-		self.filename=filename
+		self.filename=outfilename
 		#check nonexistent filename
-		if os.path.isfile(self.filename):
-			print "Initialized with existing file. WILL NOT SAVE."
+		#if os.path.isfile(self.filename):
+		#	print "Initialized with existing file. WILL NOT SAVE."
 		
+		self.group=group
+
 		if N is None:
-			self.N=parameters.n_kids
+			if group=='kids':
+				self.N=parameters.n_kids
+			elif group=='adults':
+				self.N=parameters.n_adults
 		else:
 			self.N=N
 		
@@ -64,7 +69,12 @@ class AnalyzedData():
 
 
 	def load_data(self):
-		data=Data.Data(parameters.inputfile_kids)
+		if self.group=='kids':
+			data=Data.Data(parameters.inputfile_kids)
+		elif self.group=='adults':
+			data=Data.Data(parameters.inputfile_adults)
+		else:
+			print 'Unknown group.'
 		data.read(astext=False)
 		return data
 

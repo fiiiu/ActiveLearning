@@ -5,29 +5,57 @@ import parameters
 import AnalyzedData
 import cProfile
 import cPickle as pkl
-
-# import parameters
-# import sys
-# import matplotlib.pyplot as plt
-# import Datapoint
-# import entropy_gains
-
-# import world
-# import time
-# import random
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
-
-def main(A=10, N=31, R=50):
-	mps=np.zeros((11,2))
-	for i,theta in enumerate(np.linspace(0,1,11)):
+def main_global(A=10, N=31, R=50):
+	nsteps=25
+	mps=np.zeros((nsteps,2))
+	for i,theta in enumerate(np.linspace(0,1,nsteps)):
 		mps[i][0]=theta
 		mps[i][1]=run_global_theta(theta, A, N, R)
 
-	with open('misprediction.pkl', 'wb') as f:
-		pkl.dump(mps, f)
+	#with open('misprediction.pkl', 'wb') as f:
+	#	pkl.dump(mps, f)
 	
+	plot(mps)
 	print mps
+
+def main_individual(A=10, N=31, R=50):
+	nsteps=25
+	data=load_data()
+	subjects=data.get_kids()[:N]
+	results=np.zeros((N,3))
+	for i, subject in enumerate(subjects):
+		run=run_individual_theta(subject,data, A, R, nsteps)
+		results[i,:]=run
+		# print mintheta, misp, err 
+		# results[i,0]=mintheta
+		# results[i,1]=misp
+
+	print results
+	plot_individual(results)
+
+def plot_individual(results):
+	plt.hist(results[:,0])
+	plt.xlabel('theta')
+	plt.show()
+	plt.hist(results[:,1])
+	plt.xlabel('Average Misprediction')
+	plt.show()
+	plt.errorbar(results[:,0],results[:,1],yerr=results[:,2],fmt='o')
+	plt.xlabel('theta')
+	plt.ylabel('Average Misprediction')
+	plt.show()
+
+
+def plot(mps):
+	plt.plot(mps[:,0], mps[:,1])
+	#WRONG plt.errorbar(mps[:,0], mps[:,1], yerr=(0.1, 0.1), marker='o')
+	plt.xlabel('theta')
+	plt.ylabel('ave misprediction')
+	plt.show()
 
 def run_global_theta(theta, A, N, R):
 	model=learners.TabulatedMixedLearner(theta, 'td_10A.pkl')
@@ -40,19 +68,38 @@ def run_global_theta(theta, A, N, R):
 		for r in range(R):
 			subject_misp+=misprediction_count(model, data, subject, max_action=A)
 
-		print "Misprediction average, subject {0}, {1} realizations: {2}"\
-					.format(subject, R, subject_misp/R)
+		#print "Misprediction average, subject {0}, {1} realizations: {2}"\
+		#			.format(subject, R, subject_misp/R)
 
 		total_misp+=subject_misp/R
 
 	print "Total misprediction average, {0} realizations: {1}"\
 					.format(R, total_misp/N)
 
-	return total_misp/N		
+	return total_misp/N	
+
+
+def run_individual_theta(subject, data, A, R, nsteps):	
+	misp=np.zeros((nsteps,3))
+	for i,theta in enumerate(np.linspace(0,1,nsteps)):
+		theta_misp=0
+		model=learners.TabulatedMixedLearner(theta, 'td_10A.pkl')
+
+		theta_misps=[misprediction_count(model,data,subject,max_action=A) for r in range(R)]
+		#for r in range(R):
+		#	theta_misp+=misprediction_count(model, data, subject, max_action=A)
+		misp[i,0]=theta
+		misp[i,1]=np.mean(theta_misps)#theta_misp/R
+		misp[i,2]=np.std(theta_misps)
+		#print theta_misps
+		#print misp[i,0],misp[i,1],misp[i,2]
+
+	return min(misp, key=lambda x: x[1])
 
 
 def load_data():
-	data=Data.Data(parameters.inputfile_kids)
+#	data=Data.Data(parameters.inputfile_kids)
+	data=Data.Data(parameters.inputfile_adults)
 	data.read(astext=False)
 	return data
 
@@ -69,7 +116,6 @@ def misprediction_count(model, data, subject, max_action=None):
 	for i in range(max_action):
 		model_actions=model.choose_actions(subject, i, subject_sequence[:i-1])
 		#model_actions=adata[subject][i]['TMA']#model.choose_action(subject_sequence[:i-1])
-		#print model_actions
 		if subject_sequence[-1].get_action() not in model_actions:
 			mispredictions[i]=1
 
@@ -79,15 +125,6 @@ def misprediction_count(model, data, subject, max_action=None):
 
 
 if __name__ == '__main__':
-# 	n=6
-# 	if len(sys.argv)==1:
-# 		player='kids'		
-# 	else:
-# 		player=sys.argv[1]
-# 		if len(sys.argv)>2:
-# 			n=int(sys.argv[2])
-# 			if len(sys.argv)>3:
-# 				parallel=bool(sys.argv[3])
-	cProfile.run('main()')
- 	#main()
+	#cProfile.run('main()')
+ 	main_individual(N=5)
 
