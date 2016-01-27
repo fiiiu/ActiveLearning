@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-def main_global(A=10, N=31, R=50):
+def main_global(group, filename, A=10, N=31, R=50):
 	nsteps=25
 	mps=np.zeros((nsteps,2))
 	for i,theta in enumerate(np.linspace(0,1,nsteps)):
 		mps[i][0]=theta
-		mps[i][1]=run_global_theta(theta, A, N, R)
+		mps[i][1]=run_global_theta(group, filename, theta, A, N, R)
 
 	#with open('misprediction.pkl', 'wb') as f:
 	#	pkl.dump(mps, f)
@@ -22,13 +22,13 @@ def main_global(A=10, N=31, R=50):
 	plot(mps)
 	print mps
 
-def main_individual(A=10, N=31, R=50):
+def main_individual(group, filename, A=10, N=31, R=50):
 	nsteps=25
-	data=load_data()
+	data=load_data(group)
 	subjects=data.get_kids()[:N]
 	results=np.zeros((N,3))
 	for i, subject in enumerate(subjects):
-		run=run_individual_theta(subject,data, A, R, nsteps)
+		run=run_individual_theta(filename, subject, data, A, R, nsteps)
 		results[i,:]=run
 		# print mintheta, misp, err 
 		# results[i,0]=mintheta
@@ -57,9 +57,9 @@ def plot(mps):
 	plt.ylabel('ave misprediction')
 	plt.show()
 
-def run_global_theta(theta, A, N, R):
-	model=learners.TabulatedMixedLearner(theta, 'td_10A.pkl')
-	data=load_data()
+def run_global_theta(group, filename, theta, A, N, R):
+	model=learners.TabulatedMixedLearner(theta, filename)
+	data=load_data(group)
 	subjects=data.get_kids()[:N]
 
 	total_misp=0
@@ -79,11 +79,11 @@ def run_global_theta(theta, A, N, R):
 	return total_misp/N	
 
 
-def run_individual_theta(subject, data, A, R, nsteps):	
+def run_individual_theta(filename, subject, data, A, R, nsteps):	
 	misp=np.zeros((nsteps,3))
 	for i,theta in enumerate(np.linspace(0,1,nsteps)):
 		theta_misp=0
-		model=learners.TabulatedMixedLearner(theta, 'td_10A.pkl')
+		model=learners.TabulatedMixedLearner(theta, filename)
 
 		theta_misps=[misprediction_count(model,data,subject,max_action=A) for r in range(R)]
 		#for r in range(R):
@@ -97,9 +97,13 @@ def run_individual_theta(subject, data, A, R, nsteps):
 	return min(misp, key=lambda x: x[1])
 
 
-def load_data():
-#	data=Data.Data(parameters.inputfile_kids)
-	data=Data.Data(parameters.inputfile_adults)
+def load_data(group):
+	if group=='kids':
+		data=Data.Data(parameters.inputfile_kids)
+	elif group=='adults':
+		data=Data.Data(parameters.inputfile_adults)
+	else:
+		print 'Unknown group.'
 	data.read(astext=False)
 	return data
 
@@ -126,5 +130,19 @@ def misprediction_count(model, data, subject, max_action=None):
 
 if __name__ == '__main__':
 	#cProfile.run('main()')
- 	main_individual(N=5)
+	#main_global(group='kids', filename='td_kids_A10.pkl', N=31)
 
+	#main_global(group='adults', filename='td_adults_A10.pkl', N=98)
+	#main_global(filename='td_adults_10A.pkl'N=98)
+	
+	#kids
+	group='kids'
+	filename='td_kids_A10.pkl'
+	#main_global(group, filename)
+	#main_individual(group, filename)
+
+	#adults
+	group='adults'
+	filename='td_adults_A10.pkl'
+	#main_global(group, filename)
+	main_individual(group, filename)

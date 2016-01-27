@@ -6,7 +6,7 @@ import AnalyzedData
 if os.path.isfile('td.pkl'):
 	os.remove('td.pkl')
 
-ad=AnalyzedData.AnalyzedData('td_adults_2_2.pkl', 'adults', N=2, A=2)
+ad=AnalyzedData.AnalyzedData('td_adults_2_10.pkl', 'adults', N=2, A=10)
 
 
 starttime=time.clock()
