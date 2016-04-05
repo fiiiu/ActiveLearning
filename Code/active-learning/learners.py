@@ -210,7 +210,7 @@ class TabulatedMixedLearner():
 			action_values[a]=self.theta*IG+(1-self.theta)*PGv
 
 		min_value=action_values[min(action_values, key=lambda x: x[1])] #take the min value
-		min_actions=[ac for ac in av.keys() if action_values[i]==min_value] #find ALL actions that achieve it
+		min_actions=[a for a in action_values.keys() if action_values[a]==min_value] #find ALL actions that achieve it
 
 		return min_actions
 

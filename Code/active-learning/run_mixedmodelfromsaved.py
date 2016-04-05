@@ -145,4 +145,4 @@ if __name__ == '__main__':
 	group='adults'
 	filename='td_adults_N2_A10.pkl'
 	#main_global(group, filename)
-	main_individual(group, filename)
+	main_individual(group, filename, N=2)
