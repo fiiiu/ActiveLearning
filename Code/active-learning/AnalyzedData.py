@@ -5,6 +5,7 @@ import parameters
 import Data
 import learners
 import entropy_gains
+import world
 
 class AnalyzedData():
 
@@ -47,23 +48,35 @@ class AnalyzedData():
 				#print 'Action {0} of {1}'.format(actioni, max_action)
 				self.alldata[subject][actioni]={}
 				subject_action=data.data[subject][actioni].get_action()
-				self.alldata[subject][actioni]['SA']=subject_action
-				
+				self.alldata[subject][actioni]['SubjectAction']=subject_action
+
 				theory_model=learners.TheoryLearner()
-				model_actions, model_gain=theory_model.choose_actions(subject_sequence[:actioni])
-				
-				self.alldata[subject][actioni]['TMA']=model_actions
-
-				self.alldata[subject][actioni]['SEIG']=\
-					entropy_gains.theory_expected_final_entropy(subject_action, subject_sequence[:actioni])
-			
-				self.alldata[subject][actioni]['TMEIG']=model_gain
-				
 				pg_model=learners.ActivePlayer()
-				model_actions, model_gain=pg_model.choose_actions(subject_sequence[:actioni])
+				# model_actions, model_gain=pg_model.choose_actions(subject_sequence[:actioni])
+				self.alldata[subject][actioni]['ActionValues']={}
 
-				self.alldata[subject][actioni]['PMA']=model_actions
-				self.alldata[subject][actioni]['PMSP']=model_gain
+
+				for a in world.possible_actions():
+					EIG=theory_model.expected_final_entropy(a, subject_sequence[:actioni])
+					PG=pg_model.success_probability(a, subject_sequence[:actioni])					
+					self.alldata[subject][actioni]['ActionValues'][a]=(EIG,PG)
+
+
+				# theory_model=learners.TheoryLearner()
+				# model_actions, model_gain=theory_model.choose_actions(subject_sequence[:actioni])
+				
+				# self.alldata[subject][actioni]['TMA']=model_actions
+
+				# self.alldata[subject][actioni]['SEIG']=\
+				# 	entropy_gains.theory_expected_final_entropy(subject_action, subject_sequence[:actioni])
+			
+				# self.alldata[subject][actioni]['TMEIG']=model_gain
+				
+				# pg_model=learners.ActivePlayer()
+				# model_actions, model_gain=pg_model.choose_actions(subject_sequence[:actioni])
+
+				# self.alldata[subject][actioni]['PMA']=model_actions
+				# self.alldata[subject][actioni]['PMSP']=model_gain
 
 			self.save()
 

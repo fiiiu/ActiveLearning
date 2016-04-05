@@ -143,6 +143,6 @@ if __name__ == '__main__':
 
 	#adults
 	group='adults'
-	filename='td_adults_A10.pkl'
+	filename='td_adults_N2_A10.pkl'
 	#main_global(group, filename)
 	main_individual(group, filename)

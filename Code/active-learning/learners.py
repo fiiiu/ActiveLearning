@@ -188,66 +188,6 @@ class ActivePlayer():
 
 
 
-class MixedLearner():
-	
-	""" 
-	Player mixing IG and PM with probability theta (for IG). 
-	Now using THEORY for IG.
-	"""
-	
-	def __init__(self, theta):
-		self.theta=theta
-	
-	def choose_action(self, prev_data=[]):
-		choices=[self.IG_action(prev_data), self.PM_action(prev_data)]
-		strategy=np.random.choice(2, p=[self.theta, 1-self.theta])
-		choice=choices[strategy]
-		return choice
-
-	def IG_action(self, prev_data=[]):
-		mingain=1000
-		astars=[]
-		for a in world.possible_actions():
-			if len(prev_data)>0:
-				if a==prev_data[-1].action:
-					continue
-			this_gain=self.expected_final_entropy(a, prev_data)
-			if this_gain < mingain:
-				astars=[a]
-				mingain=this_gain
-			elif this_gain == mingain:
-				astars.append(a)
-		choice=random.choice(astars)
-		return choice
-
-	def expected_final_entropy(self, action, data=None):
-		return entropy_gains.theory_expected_final_entropy(action, data)
-
-	def PM_action(self, prev_data=[]):
-		maxprob=0
-		astars=[]
-		for a in world.possible_actions():
-			if len(prev_data)>0:
-				if a==prev_data[-1].action:
-					continue
-			this_prob=self.success_probability(a, prev_data)
-			if this_prob > maxprob:
-				astars=[a]
-				maxprob=this_prob
-			elif this_prob == maxprob:
-				astars.append(a)
-		choice=random.choice(astars)
-		return choice
-
-
-	def success_probability(self, action, prev_data=[]):
-		data_no, data_yes=world.possible_data(action)
-		p_yes=model.p_data_action(data_yes, action, prev_data)
-		p_no=model.p_data_action(data_no, action, prev_data)
-		return p_yes/(p_yes+p_no)
-
-
-
 class TabulatedMixedLearner():
 	
 	""" 
@@ -262,12 +202,115 @@ class TabulatedMixedLearner():
 		self.alldata=adata.alldata
 	
 	def choose_actions(self, subject, actioni, prev_data=[]):
-		IG_a=self.alldata[subject][actioni]['TMA']
-		#print IG_a
-		PM_a=self.alldata[subject][actioni]['PMA']
-		#print PM_a
+		action_values={}	
+		for a in world.possible_actions():
+			IG=self.alldata[subject][actioni]['ActionValues'][a][0]
+			PG=self.alldata[subject][actioni]['ActionValues'][a][1]
+			PGv=1-PG #invert, IG is final entropy, minimized! PG=0 -> PGv=1; PG=1 -> PGv=0
+			action_values[a]=self.theta*IG+(1-self.theta)*PGv
 
-		choices=[IG_a, PM_a]
-		strategy=np.random.choice(2, p=[self.theta, 1-self.theta])
-		choice=choices[strategy]
-		return choice
+		min_value=action_values[min(action_values, key=lambda x: x[1])] #take the min value
+		min_actions=[ac for ac in av.keys() if action_values[i]==min_value] #find ALL actions that achieve it
+
+		return min_actions
+
+
+# 		IG_a=self.alldata[subject][actioni]['TMA']
+# 		#print IG_a
+# 		PM_a=self.alldata[subject][actioni]['PMA']
+# 		#print PM_a
+
+# 		choices=[IG_a, PM_a]
+# 		strategy=np.random.choice(2, p=[self.theta, 1-self.theta])
+# 		choice=choices[strategy]
+# 		return choice
+
+
+
+
+
+
+# class MixedLearner():
+	
+# 	""" 
+# 	Player mixing IG and PM with probability theta (for IG). 
+# 	Now using THEORY for IG.
+# 	"""
+	
+# 	def __init__(self, theta):
+# 		self.theta=theta
+	
+# 	def choose_action(self, prev_data=[]):
+# 		choices=[self.IG_action(prev_data), self.PM_action(prev_data)]
+# 		strategy=np.random.choice(2, p=[self.theta, 1-self.theta])
+# 		choice=choices[strategy]
+# 		return choice
+
+
+# 	def IG_action(self, prev_data=[]):
+# 		mingain=1000
+# 		astars=[]
+# 		for a in world.possible_actions():
+# 			if len(prev_data)>0:
+# 				if a==prev_data[-1].action:
+# 					continue
+# 			this_gain=self.expected_final_entropy(a, prev_data)
+# 			if this_gain < mingain:
+# 				astars=[a]
+# 				mingain=this_gain
+# 			elif this_gain == mingain:
+# 				astars.append(a)
+# 		choice=random.choice(astars)
+# 		return choice
+
+# 	def expected_final_entropy(self, action, data=None):
+# 		return entropy_gains.theory_expected_final_entropy(action, data)
+
+# 	def PM_action(self, prev_data=[]):
+# 		maxprob=0
+# 		astars=[]
+# 		for a in world.possible_actions():
+# 			if len(prev_data)>0:
+# 				if a==prev_data[-1].action:
+# 					continue
+# 			this_prob=self.success_probability(a, prev_data)
+# 			if this_prob > maxprob:
+# 				astars=[a]
+# 				maxprob=this_prob
+# 			elif this_prob == maxprob:
+# 				astars.append(a)
+# 		choice=random.choice(astars)
+# 		return choice
+
+
+# 	def success_probability(self, action, prev_data=[]):
+# 		data_no, data_yes=world.possible_data(action)
+# 		p_yes=model.p_data_action(data_yes, action, prev_data)
+# 		p_no=model.p_data_action(data_no, action, prev_data)
+# 		return p_yes/(p_yes+p_no)
+
+
+
+# class TabulatedMixedLearner():
+	
+# 	""" 
+# 	Player mixing IG and PM with probability theta (for IG). 
+# 	Now using THEORY for IG.
+# 	"""
+	
+# 	def __init__(self, theta, filename):
+# 		self.theta=theta
+# 		adata=AnalyzedData.AnalyzedData(filename)
+# 		adata.load()
+# 		self.alldata=adata.alldata
+	
+# 	def choose_actions(self, subject, actioni, prev_data=[]):
+# 		IG_a=self.alldata[subject][actioni]['TMA']
+# 		#print IG_a
+# 		PM_a=self.alldata[subject][actioni]['PMA']
+# 		#print PM_a
+
+# 		choices=[IG_a, PM_a]
+# 		strategy=np.random.choice(2, p=[self.theta, 1-self.theta])
+# 		choice=choices[strategy]
+# 		return choice
