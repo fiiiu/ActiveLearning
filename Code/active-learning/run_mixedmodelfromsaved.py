@@ -91,8 +91,8 @@ def run_individual_theta(filename, subject, data, A, R, nsteps):
 		misp[i,0]=theta
 		misp[i,1]=np.mean(theta_misps)#theta_misp/R
 		misp[i,2]=np.std(theta_misps)
-		#print theta_misps
-		#print misp[i,0],misp[i,1],misp[i,2]
+	
+		#print misp[i,:]
 
 	return min(misp, key=lambda x: x[1])
 
@@ -118,7 +118,7 @@ def misprediction_count(model, data, subject, max_action=None):
 	mispredictions=np.zeros(max_action)
 	subject_sequence=data.data[subject][:max_action]
 	for i in range(max_action):
-		model_actions=model.choose_actions(subject, i, subject_sequence[:i-1])
+		model_actions=model.choose_actions(subject, i)#, subject_sequence[:i-1])
 		#model_actions=adata[subject][i]['TMA']#model.choose_action(subject_sequence[:i-1])
 		if subject_sequence[-1].get_action() not in model_actions:
 			mispredictions[i]=1
@@ -143,6 +143,6 @@ if __name__ == '__main__':
 
 	#adults
 	group='adults'
-	filename='td_adults_N2_A10.pkl'
+	filename='td_adults_N10_A10.pkl'
 	#main_global(group, filename)
-	main_individual(group, filename, N=2)
+	main_individual(group, filename, N=10)

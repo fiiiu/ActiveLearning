@@ -201,7 +201,7 @@ class TabulatedMixedLearner():
 		adata.load()
 		self.alldata=adata.alldata
 	
-	def choose_actions(self, subject, actioni, prev_data=[]):
+	def choose_actions(self, subject, actioni):
 		action_values={}	
 		for a in world.possible_actions():
 			IG=self.alldata[subject][actioni]['ActionValues'][a][0]
@@ -209,10 +209,26 @@ class TabulatedMixedLearner():
 			PGv=1-PG #invert, IG is final entropy, minimized! PG=0 -> PGv=1; PG=1 -> PGv=0
 			action_values[a]=self.theta*IG+(1-self.theta)*PGv
 
-		min_value=action_values[min(action_values, key=lambda x: x[1])] #take the min value
-		min_actions=[a for a in action_values.keys() if action_values[a]==min_value] #find ALL actions that achieve it
+		#min_value=action_values[min(action_values, key=lambda x: x[1])] #take the min value --WRONG!!!
+		min_value=min(action_values.itervalues())
+		#min_actions=[a for a in action_values.keys() if action_values[a]==min_value] #find ALL actions that achieve it --should be ok, cleaner below
+		min_actions=[a for a,v in action_values.iteritems() if v==min_value]
 
-		return min_actions
+
+		#discard repeated action choice
+		if actioni>0:
+			prev_action=self.alldata[subject][actioni-1]['SubjectAction']
+		else:
+			prev_action=()
+
+		if len(set(min_actions)-set([prev_action])) == 0:
+			del action_values[prev_action]
+			min_value=min(action_values.itervalues())
+			min_actions=[a for a,v in action_values.iteritems() if v==min_value]
+		else:	
+			min_actions=set(min_actions)-set([prev_action])
+
+		return list(min_actions)
 
 
 # 		IG_a=self.alldata[subject][actioni]['TMA']
