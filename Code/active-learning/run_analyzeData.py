@@ -6,8 +6,8 @@ import parameters
 if os.path.isfile('td.pkl'):
 	os.remove('td.pkl')
 
-#ad=AnalyzedData.AnalyzedData('td_adults_2_10.pkl', 'adults', N=2, A=10)
-ad=AnalyzedData.AnalyzedData('td_adults_A10.pkl', 'adults', N=parameters.n_adults, A=10)
+ad=AnalyzedData.AnalyzedData('td_kids_A10.pkl', 'kids', N=parameters.n_kids, A=10)
+#ad=AnalyzedData.AnalyzedData('td_adults_A10.pkl', 'adults', N=parameters.n_adults, A=10)
 
 
 starttime=time.clock()

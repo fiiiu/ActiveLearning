@@ -27,6 +27,7 @@ def main_individual(group, filename, A=10, N=31, R=50):
 	data=load_data(group)
 	subjects=data.get_kids()[:N]
 	results=np.zeros((N,3))
+	print('yeye')
 	for i, subject in enumerate(subjects):
 		run=run_individual_theta(filename, subject, data, A, R, nsteps)
 		results[i,:]=run
@@ -40,12 +41,14 @@ def main_individual(group, filename, A=10, N=31, R=50):
 def plot_individual(results):
 	plt.hist(results[:,0])
 	plt.xlabel('theta')
+	plt.xlim([0,1])
 	plt.show()
 	plt.hist(results[:,1])
 	plt.xlabel('Average Misprediction')
 	plt.show()
 	plt.errorbar(results[:,0],results[:,1],yerr=results[:,2],fmt='o')
 	plt.xlabel('theta')
+	plt.xlim([0,1])
 	plt.ylabel('Average Misprediction')
 	plt.show()
 
@@ -139,10 +142,10 @@ if __name__ == '__main__':
 	group='kids'
 	filename='td_kids_A10.pkl'
 	#main_global(group, filename)
-	#main_individual(group, filename)
+	main_individual(group, filename, N=parameters.n_kids)
 
 	#adults
 	group='adults'
-	filename='td_adults_N10_A10.pkl'
+	filename='td_adults_A10.pkl'
 	#main_global(group, filename)
-	main_individual(group, filename, N=10)
+	#main_individual(group, filename, N=parameters.n_adults)
