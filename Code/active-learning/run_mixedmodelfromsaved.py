@@ -142,10 +142,10 @@ if __name__ == '__main__':
 	group='kids'
 	filename='td_kids_A10.pkl'
 	#main_global(group, filename)
-	main_individual(group, filename, N=parameters.n_kids)
+	#main_individual(group, filename, N=parameters.n_kids)
 
 	#adults
 	group='adults'
-	filename='td_adults_A10.pkl'
+	filename='td_adults_eig_N10A10.pkl'
 	#main_global(group, filename)
-	#main_individual(group, filename, N=parameters.n_adults)
+	main_individual(group, filename, N=10)#parameters.n_adults)

@@ -110,6 +110,9 @@ class TheoryLearner(ActiveLearner):
 		return entropy_gains.theory_expected_final_entropy(action, data)
 	
 
+	def expected_information_gain(self, action, data=None):
+		return entropy_gains.theory_expected_entropy_gain(action, data)
+
 
 class JointLearner(ActiveLearner):
 	"""docstring for JointLearner"""
@@ -206,8 +209,9 @@ class TabulatedMixedLearner():
 		for a in world.possible_actions():
 			IG=self.alldata[subject][actioni]['ActionValues'][a][0]
 			PG=self.alldata[subject][actioni]['ActionValues'][a][1]
-			PGv=1-PG #invert, IG is final entropy, minimized! PG=0 -> PGv=1; PG=1 -> PGv=0
-			action_values[a]=self.theta*IG+(1-self.theta)*PGv
+			#PGv=1-PG #invert, IG is final entropy, minimized! PG=0 -> PGv=1; PG=1 -> PGv=0
+			#action_values[a]=self.theta*IG+(1-self.theta)*PGv
+			action_values[a]=-self.theta*IG-(1-self.theta)*PG
 
 		#min_value=action_values[min(action_values, key=lambda x: x[1])] #take the min value --WRONG!!!
 		min_value=min(action_values.itervalues())

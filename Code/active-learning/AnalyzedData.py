@@ -57,7 +57,8 @@ class AnalyzedData():
 
 
 				for a in world.possible_actions():
-					EIG=theory_model.expected_final_entropy(a, subject_sequence[:actioni])
+					#EIG=theory_model.expected_final_entropy(a, subject_sequence[:actioni])
+					EIG=-1*theory_model.expected_information_gain(a, subject_sequence[:actioni])
 					PG=pg_model.success_probability(a, subject_sequence[:actioni])					
 					self.alldata[subject][actioni]['ActionValues'][a]=(EIG,PG)
 
